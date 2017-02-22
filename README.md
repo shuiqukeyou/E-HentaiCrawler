@@ -10,7 +10,7 @@
 
 #项目依赖
 
-本项目使用的python版本为python3.5，稍微改改应该能做到py2、py3兼容。（说得好像谁会frok这个项目一样）
+本项目使用的python版本为python3.5，稍微改改应该能做到py2、py3兼容。（说得好像谁会fork这个项目一样）
 
 requests、pymysql、BeautifulSoup4、IPProxyPool。  
 注：
@@ -40,18 +40,15 @@ ___
 
 2. 先使用database/newdatbase中的new_indextable创建目录表
 
-3. 在运行main中的index_main获取最新的列表，需要EX绅士的cookie。另外这个部分写于年前，当时我还比较图样。
-这个模块是单线程、有一堆小BUG、没有代理（会被banIP），所以大概体验极差。另外对应的数据库写入模块请自行做好设定。
+3. 在运行main中的index_main获取最新的列表，需要EX绅士的cookie。另外这个部分写于年前，当时我还比较图样。这个模块是单线程、有一堆小BUG、没有代理（会被banIP），所以大概体验极差。另外对应的数据库写入模块请自行做好设定。
 
 4. 运行database/newdatbase中的new_datatable来创建数据表。
 
 5. 运行main中的API_main，比index_main的BUG控制好了点，有了手动更换的代理，仍然是单线程。同样需要修改对应的数据库模块
 
-6. 运行multiprocessing_test中的main函数，用于获取表站的数据，从这里开始需要另外运行IPProxyPool项目。
-除了IP池耗尽和断网外基本不会崩溃。但是这里是纯多进程，效率低下。同样需要修改数据库模块
+6. 运行multiprocessing_test中的main函数，用于获取表站的数据，从这里开始需要另外运行IPProxyPool项目。除了IP池耗尽和断网外基本不会崩溃。但是这里是纯多进程，效率低下。同样需要修改数据库模块
 
-7. 运行multiprocessing_thread中的main函数，用于获取里站的数据，需要设定cookie，
-另外同样需要运行IPProxyPool项目和修改数据库模块。稳定性和性能较多进程版本更强。
+7. 运行multiprocessing_thread中的main函数，用于获取里站的数据，需要设定cookie，另外同样需要运行IPProxyPool项目和修改数据库模块。稳定性和性能较多进程版本更强。
 ___
 为了不给E绅士的服务器带来太大负担（毕竟我是白嫖的），哪怕是最后的multiprocessing_thread的爬虫策略也非常保守，嫌慢可以将休眠缩短，进程开多。
 
