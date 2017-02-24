@@ -38,9 +38,9 @@ multiprocessing_thread文件夹内为多进程模式的改良版本，调整成�
 ___
 1. 先准备一个EX绅士的帐号，要求注册时间超过2周
 
-2. 先使用database/newdatbase中的new_indextable创建目录表
+2. 使用database/newdatbase中的new_indextable创建目录表
 
-3. 在运行main中的index_main获取最新的列表，需要EX绅士的cookie。另外这个部分写于年前，当时我还比较图样。这个模块是单线程、有一堆小BUG、没有代理（会被banIP），所以大概体验极差。另外对应的数据库写入模块请自行做好设定。
+3. 再运行main中的index_main获取最新的列表，需要EX绅士的cookie。另外这个部分写于过年前，当时我还比较图样。这个模块是单线程、有一堆小BUG、没有代理（会被banIP），所以大概体验极差。另外对应的数据库写入模块请自行做好设定。
 
 4. 运行database/newdatbase中的new_datatable来创建数据表。
 
