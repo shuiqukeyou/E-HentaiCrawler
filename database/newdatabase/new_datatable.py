@@ -1,18 +1,20 @@
-﻿import pymysql
+# -*- coding: utf-8 -*-
+from database.link_database import link_database
 
-FIELD=['id','gid','token','Favorited','Ratings','archiver_key','title','title_jpn','language','category','thumb','uploader','posted','filecount','filesize','expunged','rating','torrentcount','tags','ex',"writed"]
-ATTR=["int(10) not null primary key ",'int(7) not null','verchar(10) not null','int(5)','int(5)','verchar(100)','varchar(500)','varchar(500)','verchar(20)','verchar(200)','verchar(200)','verchar(100)','bigint(10)','int(5)','bigint(10)','verchar(5)','float(3,2)','int(2)','varchar(5000)']
-# 新建记录数据的数据表
-# 字段请参见E绅士wiki上的API部分，在其之上增加了'Favorited'、'Ratings'、'language'、'ex'\'writed'五个字段
-# 分别用于记录API无法获取到的收藏数、评分次数、语种，以及标记是否属于ex绅士(默认为0，即不属于EX绅士)、是否已经写入过（默认为0，即没有写入）
-def newtable():
-    with pymysql.connect(host='127.0.0.1', user='数据库帐号', passwd='数据库密码', db='ehproject') as  conn:
-        n = len(FIELD)
-        str=[]
-        for i in range(n):
-            str.append(FIELD[i]+" "+ATTR[i])
-        STR = ",".join(str)
-        conn.execute('create table ehdata(%s)'% STR)
+FIELD_AND_ATTR = {"id":"int(10) primary key auto_increment","gid":"int(7) not null","token":"verchar(10) not null",
+                  "favorited":"int(5)","ratings":"int(5)","archiver_key":"verchar(100)","title":"varchar(500)",
+                  "title_jpn":"varchar(500)","elanguage":"verchar(20)","category":"verchar(200)","thumb":"verchar(200)",
+                  "uploader":"verchar(100)","posted":"bigint(10)","filecount":"int(5)","filesize":"bigint(10)",
+                  "expunged":"verchar(5)","rating":"float(3,2)","torrentcount":"int(2)","tags":"varchar(5000)"}
+
+@link_database
+def newtable(cur):
+    str=[]
+    for field in FIELD_AND_ATTR:
+        str.append(field +" " + FIELD_AND_ATTR[field])
+    STR = ",".join(str)
+    cur.execute('create table ehdata(%s)'% STR)
+    print('create table ehdata(%s)'% STR)
 
 
 if __name__ == "__main__":
