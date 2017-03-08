@@ -6,17 +6,18 @@
 
 所以我就自己做了...也算是练一练手。
 
-由于原代码里有敏感内容：我的常用密码、我的VPS的IP等，所以这个项目彻底跑完后我才将所有代码放上来，结果就是...git的描述乱到爆炸。
 
 #项目依赖
+requests、pymysql、BeautifulSoup4、[IPProxyPool](https://github.com/qiyeboy/IPProxyPool)。  
 
-本项目使用的python版本为python3.5，稍微改改应该能做到py2、py3兼容。（说得好像谁会fork这个项目一样）
+本项目使用的数据库为mysql，如果有使用其他数据库的，请自行修改database部分的模块
 
-requests、pymysql、BeautifulSoup4、IPProxyPool。  
+本项目使用的python版本为python3.5，稍微改改应该能做到py2、py3兼容。
+
 注：
 
 * [IPProxyPool](https://github.com/qiyeboy/IPProxyPool)是一个爬取代理IP的爬虫，本项目中的IP池模块基于该项目运行
-* IPProxyPool模块另有其自身的依赖，请移步至项目地址查看其所需依赖
+* [IPProxyPool](https://github.com/qiyeboy/IPProxyPool)模块另有其自身的依赖，请移步至项目地址查看其所需依赖（部分依赖与本项目依赖相同）
 
 #项目介绍
 
