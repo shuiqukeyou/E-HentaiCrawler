@@ -24,7 +24,7 @@ def error_handing( qd, qe,qip,n):
                 data = getfav_rat(index[0], index[1], ABS_PROXY)
                 APIdata.update(favorited=data['favorited'], ratings=data['ratings'], elanguage=data['elanguage'],
                                title_jpn=data['title_jpn'])
-                APIdata.put(data)
+                qd.put(APIdata)
                 n -= 1
         else:
             sleep(1)

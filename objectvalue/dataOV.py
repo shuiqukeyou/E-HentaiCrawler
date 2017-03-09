@@ -42,7 +42,7 @@ class dataOV(object):
 
     def __str__(self):
         NUMBER_FIELD = ['gid', 'posted','favcount', 'ratings', 'filecount', 'filesize', 'rating', 'torrentcount',"favorited"]
-        datateble = "ehdata"
+        datateble = "ehtest"
         attrs = []
         values = []
         for attr in self.__SQL_FIELD:
@@ -59,7 +59,7 @@ class dataOV(object):
 
     def getSQLStr(self):
         NUMBER_FIELD = ['gid', 'posted','favcount', 'ratings', 'filecount', 'filesize', 'rating', 'torrentcount',"favorited"]
-        datateble = "ehdata"
+        datateble = "ehtest"
         attrs = []
         values = []
         for attr in self.__SQL_FIELD:

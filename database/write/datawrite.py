@@ -8,6 +8,7 @@ import os
 # @link_database
 def writedata(cur,webdata):
     try:
+        print(webdata.getindex())
         cur.execute(webdata.getSQLStr())
         # pass
     except BaseException as e:
@@ -25,8 +26,13 @@ def writedata(cur,webdata):
             pathlist.append("SQLerrorLog.txt")
             logpath = "/".join(pathlist)
         with open(logpath, 'a') as f:
-            f.write("异常语句："+webdata.getSQLStr())
-            f.write("异常信息："+e.__str__())
+            try:
+                f.write("异常语句："+webdata.getSQLStr())
+                f.write("异常信息："+e.__str__())
+            except BaseException as e:
+                print("写入失败")
+                print("异常语句："+webdata.getSQLStr())
+                print ("异常信息："+e.__str__())
     cur.connection.commit()
 
 if __name__ == "__main__":

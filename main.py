@@ -25,15 +25,16 @@ if __name__ == "__main__":
     while n < PROCESS_MAX:
         Process(target=webdatageter, args=(qindex, qdata, qerror, qip)).start()
         n += 1
+    # 数据写入器线程
+    threading.Thread(target=data_writer, args=(qdata,)).start()
+    # 错误处理线程
+    threading.Thread(target=error_handing, args=(qdata, qerror, qip, n)).start()
     # 获取THREAD_COUNT个代理用于开启爬虫线程
     n = 0
-    while n < THREAD_MAX:
+    while n < THREAD_MAX * THREAD_MAX:
         try:
             qip.put(getIP())
             n += 1
         except BaseException:
             break
-    # 数据写入器线程
-    threading.Thread(target=data_writer, args=(qdata,)).start()
-    # 错误处理线程
-    threading.Thread(target=error_handing, args=(qdata, qerror, qip, n)).start()
+

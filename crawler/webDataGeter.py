@@ -20,8 +20,8 @@ def __dataget(qi,qd,qe,px,n):
                     data = qi.get()
                     try:
                         index = data.getindex()
-                        data = getfav_rat(index[0], index[1], px)
-                        data.update(favorited = data['favorited'], ratings = data['ratings'], elanguage = data['elanguage'], title_jpn = data['title_jpn'])
+                        webdata = getfav_rat(index[0], index[1], px)
+                        data.update(favorited = webdata['favorited'], ratings = webdata['ratings'], elanguage = webdata['elanguage'], title_jpn = webdata['title_jpn'])
                         sleep(0.5)
                         qd.put(data)
                         count +=1
@@ -46,8 +46,8 @@ def __dataget(qi,qd,qe,px,n):
 
 def webdatageter(qi, qd, qe, qip):
     n = 0
-    print('爬虫进程启动')
     while True:
         while n < THREAD_MAX and not qip.empty():
+            print('爬虫线程启动')
             n += 1
             threading.Thread(target=__dataget, args=(qi, qd, qe, qip.get(),n)).start()

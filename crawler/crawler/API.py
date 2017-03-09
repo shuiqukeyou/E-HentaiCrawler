@@ -25,8 +25,6 @@ def getAPIdata(jsonStr,IPandport):
         try:
             req = requests.post(posturl,proxies=proxies,data=jsonObj)
             html = (req.text).replace('\ud83d\udce4', " ")
-            if ErrorCount > 5:
-                raise BanIPError
             if 'Your IP' in html:
                 print(html)
                 raise BanIPError
@@ -48,10 +46,14 @@ def getAPIdata(jsonStr,IPandport):
                 with open(logpath, 'a') as f:
                     f.write("API爬虫异常：" + e.__str__())
                 raise APIError(html)
-        except BaseException:
-            print('代理服务器未响应，等待5秒后重新试')
+        except BaseException as  e:
+            print(e.__str__())
+            ErrorCount += 1
+            if ErrorCount > 5:
+                raise BanIPError
+            print('代理服务器未响应，等待5秒后重新尝试')
             sleep(5)
-            ErrorCount += 5
+
 
 def index2json(list):
     list2 = []

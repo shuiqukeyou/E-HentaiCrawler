@@ -18,18 +18,20 @@ from Proxy.IPPool import getIP
 
 
 class getindex(object):
-    def __init__(self, lastpage=0, lastindex = None):
+    def __init__(self, lastpage=0, toekn = None):
         self.__lastpage = lastpage  # 当前进行到第几页
-        self.__lastindex = lastindex  # 上一页的最后一条
+        self.__token = toekn  # 上一页的最后一条
         self.__excookies = requests.utils.cookiejar_from_dict(config.COOKIE_DICT, cookiejar=None, overwrite=True)# 装载cookie
         self.__IPandport = getIP()
         self.__proxies = {"https": "http://%s:%s"%(self.__IPandport[0],str(self.__IPandport[1]))}
+        print("目录爬虫启动")
 
 
     # 返回结果
     def getlist(self):
+        print("目录爬虫进行到第%s"%self.__lastpage)
         return self.__read_html()
-
+        # print(self.__read_html())
 
     # 解析获取到的网页
     def __read_html(self):
@@ -43,11 +45,11 @@ class getindex(object):
                     if 'href' in link.attrs:
                         hlist.append(self.__parse_html(link.attrs['href']))
                 #  检查上一页的最后一条有没有被挤到这页，如果有，修剪目录list
-                if self.__lastindex in hlist:
-                    lastindex = hlist.index(self.__lastindex)
+                if self.__token in hlist:
+                    lastindex = hlist.index(self.__token)
                     hlist = hlist[lastindex+1:len(hlist)]
                 # 更新最后一条的值
-                self.__lastindex = hlist[-1]
+                self.__token = hlist[-1]
                 # 写入最后一条的值
                 rootpath = os.path.abspath(config.__file__)
                 if os.name == "nt":
@@ -62,7 +64,8 @@ class getindex(object):
                     pathlist.append("lastpage&index.txt")
                     lastindexpath = "/".join(pathlist)
                 with open(lastindexpath, 'w') as f:
-                    f.write(self.__lastindex)
+                    f.write(str(self.__lastpage) + "," + str(self.__token[0]) + ',' + self.__token[1])
+                self.__lastpage += 1
                 return hlist
             except BaseException as e:
                 print("列表爬虫发生未知异常,重新尝试获取列表")
@@ -83,9 +86,9 @@ class getindex(object):
                 with open(logpath, 'a') as f:
                     f.write("列表爬虫异常：" + e.__str__())
                 ErrorCount += 1
-            if ErrorCount > 10:
-                print("发生严重错误，终止目录进程")
-                raise GetIndexError(self.__lastpage, self.__lastindex)
+            if ErrorCount > 5:
+                self.__IPandport = getIP()
+                self.__proxies = {"https": "http://%s:%s" % (self.__IPandport[0], str(self.__IPandport[1]))}
 
     # 解析连接为list，用于之后组装JSON
     def __parse_html(self, link):
@@ -96,7 +99,7 @@ class getindex(object):
         ErrorCount = 0
         while True:
             try:
-                return self.__open_Ex(self.__excookies, 'https://exhentai.org/?page=' + str(self.__lastpage))
+                return self.__open_Ex(self.__excookies, exurl='https://exhentai.org/?page=' + str(self.__lastpage))
             except ExOpenError :
                 print("代理姨妈或者E绅士服务器姨妈，等待5秒后重试")
                 ErrorCount +=1
@@ -135,4 +138,8 @@ class getindex(object):
 
 if __name__ == "__main__":
     opentest = getindex()
-    print(opentest.getlist())
+    i = 0
+    while i<10:
+        print(opentest.getlist())
+        print("--*--*--")
+        i+=1

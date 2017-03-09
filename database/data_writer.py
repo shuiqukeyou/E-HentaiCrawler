@@ -8,9 +8,7 @@ from database.link_database import link_database
 def data_writer(cur,qd):
     print('数据写入器启动')
     while True:
-        if qd.empty():
-            pass
-        else:
+        if not qd.empty():
             data = qd.get()
             writedata(cur,data)
 

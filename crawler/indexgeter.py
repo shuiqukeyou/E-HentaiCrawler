@@ -17,17 +17,19 @@ APIProxy = None
 TatgetTag = False
 
 def indexgeter(qi):
+    TatgetTag = False
     indexlist = []
     # 从日志中读取上次进行到的位置
-    lastpage, lastindex = getlastindex()
+    lastpage, lastgid, lasttoken = getlastindex()
+    lastpage = int(lastpage)
     print('为API爬虫获取代理')
     APIProxy = getIP()
     # 借用API的代理寻找之前的进行到的最后一条所在的页数
-    if lastindex != None:
-        lastpage = findPage(lastpage,lastindex,APIProxy)
+    if lasttoken != None:
+        lastpage = findPage(lastpage,lastgid,lasttoken,APIProxy)
     print("创建目录爬虫")
     # 上次进行到的页数和项目
-    geter = getindex(lastpage=lastpage, lastindex = lastindex)
+    geter = getindex(lastpage=lastpage, toekn= lasttoken)
     while True:
         # 如果目录队列的项目小于5则开始获取下一页
         if qi.qsize() < 5:
@@ -49,7 +51,11 @@ def indexgeter(qi):
                     if dataOV.getindex()[1] == TARGET[1]:
                         TatgetTag = True
                         break
+                    # print(dataOV)
                     qi.put(dataOV)
+                # 清空队列
+                indexlist = []
+                dataOVlist = []
             except BanIPError:
                 print("API爬虫的代理已被Ban，更换代理")
                 APIProxy = getIP()
@@ -58,9 +64,10 @@ def indexgeter(qi):
                 break
         if TatgetTag :
             print("到达目标位置，目录发生器停止运行")
+            break
 
 
-def findPage(lastpage, lastindex, proxy):
+def findPage(lastpage, lastgid, lasttoken, proxy):
     excookies = requests.utils.cookiejar_from_dict(COOKIE_DICT, cookiejar=None, overwrite=True)
     ehheaders = {'Accept': 'text/html, application/xhtml+xml, image/jxr, */*',
                  'Accept-Encoding': 'gzip, deflate',
@@ -72,14 +79,16 @@ def findPage(lastpage, lastindex, proxy):
     while True:
         try:
             html = requests.get('https://exhentai.org/?page=' + str(lastpage), headers=ehheaders, cookies=excookies, proxies = proxy).text
-            if 'Archive Download' not in html and 'IP' in html:
+            if 'ExHentai.org - The X Makes It Sound Cool' not in html and 'Your IP' in html:
                 proxy = getIP()
-            elif lastindex[1] not in html:
-                lastpage +=1
+            elif lasttoken not in html:
+                lastpage += 1
+                print(lastpage)
                 continue
             else:
-                return lastindex
-        except BaseException:
+                return lastpage
+        except BanIPError as e:
+            print(e.__str__())
             pass
 
 def getlastindex():
@@ -97,9 +106,9 @@ def getlastindex():
         lastindexpath = "/".join(pathlist)
     with open(lastindexpath, 'r') as f:
         lastindex = f.readline().split(',')
-        if len(lastindex) == 2:
-            return lastindex[0],lastindex[1]
-        return 0,None
+        if len(lastindex) == 3:
+            return lastindex[0],lastindex[1], lastindex[2]
+        return 0,0,None
 
 
 if __name__ == "__main__":

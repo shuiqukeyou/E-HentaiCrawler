@@ -83,7 +83,7 @@ def getip_from_pool():
     try:
         return requests.get('http://127.0.0.1:8000/?protoco=2&count=1&country=%E5%9B%BD%E5%A4%96 ',
                             timeout = 5).json()[0]
-    except IndexError:
+    except BaseException:
         try:
             return requests.get('http://127.0.0.1:8000/?protoco=1&count=1&country=%E5%9B%BD%E5%A4%96 ',
                                 timeout=5).json()[0]
