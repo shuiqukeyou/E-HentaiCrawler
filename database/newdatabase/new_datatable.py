@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from database.link_database import link_database
 
-FIELD_AND_ATTR = {"id":"int(10) primary key auto_increment","gid":"int(7) not null","token":"verchar(10) not null",
-                  "favorited":"int(5)","ratings":"int(5)","archiver_key":"verchar(100)","title":"varchar(500)",
-                  "title_jpn":"varchar(500)","elanguage":"verchar(20)","category":"verchar(200)","thumb":"verchar(200)",
-                  "uploader":"verchar(100)","posted":"bigint(10)","filecount":"int(5)","filesize":"bigint(10)",
-                  "expunged":"verchar(5)","rating":"float(3,2)","torrentcount":"int(2)","tags":"varchar(5000)"}
+FIELD_AND_ATTR = {"id":"int(10) primary key auto_increment","gid":"int(7) not null","token":"varchar(10) not null",
+                  "favorited":"int(5)","ratings":"int(5)","archiver_key":"varchar(100)","title":"varchar(500)",
+                  "title_jpn":"varchar(500)","elanguage":"varchar(20)","category":"varchar(200)","thumb":"varchar(200)",
+                  "uploader":"varchar(100)","posted":"bigint(10)","filecount":"int(5)","filesize":"bigint(10)",
+                  "expunged":"varchar(5)","rating":"float(3,2)","torrentcount":"int(2)","tags":"varchar(5000)"}
 
 @link_database
 def newtable(cur):
