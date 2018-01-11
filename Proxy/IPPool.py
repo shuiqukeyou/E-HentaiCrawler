@@ -30,7 +30,7 @@ def getIP():
             ip = testIP(IPandport)
             i = 0
             delIP(ip)
-            return ip
+            return ip[0:2]
         except ProxyInvaError as e:# 如果IP不可用，最多测试三次，三次如果都是失败则舍弃该IP，并重置计数器
             print('5秒后重新进行测试')
             sleep(5)
